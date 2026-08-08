@@ -98,10 +98,13 @@ header.mast .lede{margin:16px 0 0;color:var(--ink-soft);font-size:16px}
 .presets button{font:500 12px/1 "IBM Plex Sans",sans-serif;padding:7px 11px;background:transparent;border:1px solid var(--rule);border-radius:var(--r);color:var(--ink-soft);cursor:pointer;transition:.15s}
 .presets button:hover{border-color:var(--ink);color:var(--ink)}
 .years{display:flex;gap:3px;touch-action:pan-y}
-.yr{flex:1 1 0;min-width:0;background:transparent;border:0;padding:0;cursor:pointer;font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted)}
+.yr{flex:1 1 0;min-width:0;background:transparent;border:0;padding:0;cursor:pointer;font:inherit;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--muted)}
 .yr .bar{width:100%;height:34px;background:#E9E5DE;border-radius:1px;position:relative;overflow:hidden;transition:background .15s}
 .yr .bar i{position:absolute;left:0;right:0;bottom:0;background:var(--muted);display:block;transition:background .15s}
 .yr .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;font-variant-numeric:tabular-nums}
+.yr .val{font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-variant-numeric:tabular-nums;
+  line-height:1;color:var(--muted);transition:color .15s}
+.yr.on .val{color:var(--ink);font-weight:600}
 .yr.on{color:var(--ink)}
 .yr.on .bar i{background:var(--out)}
 .yr.on .bar{background:#EFE7E4}
@@ -181,7 +184,7 @@ footer a{color:var(--ink-soft)}
 }
 @media (max-width:560px){
   .wrap{padding:0 14px 56px}
-  .yr .lbl{display:none}
+  .yr .lbl,.yr .val{display:none}
   .yr .bar{height:44px}
   .brush{padding:14px}
 }
@@ -476,7 +479,7 @@ nav.top button.tab:focus-visible{outline:2px solid var(--in);outline-offset:-2px
 
 <script>
 const DATA = {"years":[2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"places":[{"name":"Alabama","from":[1,1,6,4,3,6,3,0,1,1,0,5,2,1,3,0,0,1],"to":[0,0,2,0,1,1,2,0,0,1,2,1,2,0,1,3,2,1]},{"name":"Arkansas","from":[2,4,0,1,0,7,5,3,1,1,1,0,1,1,1,1,3,0],"to":[2,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0]},{"name":"Born in foster care","from":[9,0,0,37,8,0,0,8,0,0,11,17,23,17,13,0,0,0],"to":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Canada","from":[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,0]},{"name":"Colorado","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,1,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0]},{"name":"Connecticut","from":[2,1,2,1,1,1,1,0,0,0,2,1,0,0,0,0,0,0],"to":[9,6,8,4,9,5,1,1,1,4,7,6,3,1,4,6,5,0]},{"name":"DC","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,1,0,1,0,2,1,1,1,1,1,0,0,0,0,2,0]},{"name":"Delaware","from":[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,0,0,1,0,0,1,0,1,0,0,2,4,2,1,2,0]},{"name":"Florida","from":[1,1,11,7,9,5,8,1,0,13,2,6,9,9,6,9,2,0],"to":[4,4,12,5,8,8,4,4,6,16,22,27,31,24,24,22,16,0]},{"name":"Georgia","from":[5,12,11,8,14,13,15,11,14,17,22,12,5,13,9,19,11,1],"to":[0,1,2,1,0,4,2,1,1,3,5,5,8,7,5,6,8,1]},{"name":"Guatemala","from":[0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],"to":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Illinois","from":[11,7,8,12,8,6,4,7,3,4,5,3,2,6,7,3,4,0],"to":[17,16,19,26,28,13,12,14,10,20,20,10,21,15,16,14,7,0]},{"name":"Indiana","from":[20,27,18,20,8,17,8,5,7,8,2,2,1,1,12,1,3,0],"to":[9,8,12,13,10,12,8,5,9,11,6,4,9,6,7,3,4,0]},{"name":"Iowa","from":[1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,1,0],"to":[0,0,0,0,0,0,1,0,0,1,1,0,1,0,0,1,0,0]},{"name":"Kansas","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Kentucky","from":[7,11,7,2,6,10,3,4,2,5,5,2,3,11,14,3,4,0],"to":[6,1,0,3,0,2,3,4,1,2,1,2,2,1,4,1,3,0]},{"name":"Louisiana","from":[1,1,1,1,2,7,10,1,5,11,8,13,11,13,17,13,4,0],"to":[0,0,0,0,0,1,1,0,0,0,2,1,2,1,0,2,2,0]},{"name":"Maine","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[4,3,1,3,1,3,2,1,1,3,2,0,2,5,0,0,0,0]},{"name":"Maryland","from":[0,1,0,0,0,0,1,0,0,1,0,1,0,1,6,0,0,0],"to":[1,2,3,2,1,1,2,0,3,1,0,7,4,5,3,4,4,0]},{"name":"Massachusetts","from":[1,1,1,3,0,0,0,0,0,0,2,0,2,3,3,1,1,1],"to":[20,12,9,9,3,14,5,11,3,17,13,21,27,19,17,19,3,1]},{"name":"Michigan","from":[3,1,0,1,3,1,0,1,3,1,1,0,2,0,1,1,1,0],"to":[1,4,4,7,5,3,5,8,10,12,18,8,6,7,9,14,7,0]},{"name":"Minnesota","from":[0,1,1,0,0,0,0,0,0,1,4,0,0,0,0,0,0,0],"to":[1,0,1,0,0,1,0,1,1,2,2,0,0,1,1,2,1,0]},{"name":"Mississippi","from":[0,0,1,1,0,6,0,1,0,8,14,4,3,13,1,0,1,0],"to":[0,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0]},{"name":"Missouri","from":[4,4,3,1,1,2,0,2,0,0,1,0,0,3,2,9,0,0],"to":[2,3,2,2,1,0,3,1,1,3,1,1,1,2,1,2,1,0]},{"name":"Montana","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Nebraska","from":[2,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],"to":[0,0,0,1,3,2,1,0,0,0,0,0,1,0,0,0,2,0]},{"name":"New Hampshire","from":[0,0,1,1,2,0,0,0,0,1,2,0,0,0,3,1,0,0],"to":[5,19,8,17,14,12,13,3,9,13,11,7,11,17,10,4,3,0]},{"name":"New Jersey","from":[1,0,1,0,1,0,1,0,0,0,0,1,1,0,2,1,1,0],"to":[4,5,2,5,6,7,3,4,2,3,9,5,6,4,4,2,3,0]},{"name":"New Mexico","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]},{"name":"New York","from":[0,0,1,1,0,0,11,1,0,1,0,1,0,3,1,1,0,0],"to":[4,9,6,9,4,5,10,7,11,16,12,17,15,19,10,10,7,0]},{"name":"North Carolina","from":[13,14,12,9,31,23,21,14,15,16,14,30,17,15,5,4,12,2],"to":[2,2,2,2,6,8,3,2,2,7,11,15,8,6,4,5,5,2]},{"name":"Ohio","from":[9,7,6,5,8,6,3,1,4,1,5,6,1,5,4,2,2,0],"to":[3,4,5,6,3,6,5,3,4,4,4,9,14,13,13,10,8,0]},{"name":"Oklahoma","from":[0,0,0,0,0,5,1,0,0,0,0,0,22,1,2,0,0,0],"to":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Pennsylvania","from":[3,3,7,6,2,4,4,4,7,2,5,5,3,3,2,0,6,0],"to":[5,10,10,13,10,16,10,8,6,13,20,21,42,36,29,14,15,0]},{"name":"Puerto Rico","from":[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],"to":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"Rhode Island","from":[0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0],"to":[0,0,0,0,0,1,0,0,0,0,1,0,2,2,3,2,0,0]},{"name":"South Carolina","from":[3,2,9,1,1,7,4,3,1,4,2,2,6,0,3,1,0,1],"to":[0,0,0,0,0,0,2,0,1,0,2,9,2,6,1,2,2,1]},{"name":"Tennessee","from":[5,10,10,7,9,7,13,12,7,5,13,18,9,13,3,1,1,0],"to":[1,2,0,0,0,0,1,0,0,1,3,3,1,3,1,2,4,0]},{"name":"Texas","from":[0,8,4,1,1,0,1,2,18,107,84,68,127,102,77,97,58,9],"to":[0,0,3,1,0,0,0,0,0,2,1,3,2,0,3,1,0,9]},{"name":"Vermont","from":[0,0,1,1,0,0,0,0,1,0,1,1,0,2,0,0,0,0],"to":[3,1,1,0,0,2,1,0,0,2,2,2,3,3,1,2,0,0]},{"name":"Virginia","from":[0,0,0,0,2,4,0,3,0,1,3,1,0,1,5,4,2,0],"to":[0,3,3,1,4,11,4,4,2,6,10,5,6,8,11,6,4,0]},{"name":"Washington","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0]},{"name":"West Virginia","from":[1,0,1,1,0,1,3,3,1,3,0,0,0,1,1,1,0,0],"to":[0,0,1,1,0,1,2,0,0,0,0,0,0,0,1,0,0,0]},{"name":"Wisconsin","from":[0,2,1,0,0,0,0,1,2,0,0,0,1,1,0,0,0,0],"to":[2,2,5,1,3,0,2,2,6,3,3,3,4,1,3,0,5,0]},{"name":"Wyoming","from":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"to":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],"gender":{"years":[2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"f":[58,67,69,74,66,70,54,45,52,100,107,95,130,122,115,93,66,11],"m":[47,52,56,59,56,71,57,43,40,71,87,100,109,93,76,70,59,7]},"repeat":{"years":[2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"prev":[null,11,10,17,6,6,23,27,21,null,31,43,42,20,44,32,43,6],"foster":[null,10,17,10,12,15,12,null,7,21,29,42,34,29,33,24,26,6]}};
-const BUILT = "2026-07-31";
+const BUILT = "2026-08-08";
 /* Echo Dogs dashboards — shared behaviour.
    Depends on data.js having defined DATA. Exposes one global: APP. */
 (function () {
@@ -659,7 +662,8 @@ const BUILT = "2026-07-31";
     YEARS.forEach((y, i) => {
       const b = el("button", "yr" + (y === PARTIAL ? " partial" : ""));
       b.type = "button"; b.dataset.y = y;
-      b.innerHTML = `<span class="bar"><i style="height:${Math.max(3, totalsByYear[i] / max * 100)}%"></i></span>
+      b.innerHTML = `<span class="val">${totalsByYear[i]}</span>
+                     <span class="bar"><i style="height:${Math.max(3, totalsByYear[i] / max * 100)}%"></i></span>
                      <span class="lbl">${String(y).slice(2)}</span>`;
       b.setAttribute("aria-label", `${y}: ${totalsByYear[i]} rescued${y === PARTIAL ? ", year in progress" : ""}`);
       strip.appendChild(b);
