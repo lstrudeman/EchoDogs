@@ -199,6 +199,7 @@ footer a{color:var(--ink-soft)}
 .tile{grid-column:var(--c);grid-row:var(--r);aspect-ratio:1;border:1px solid rgba(23,38,46,.10);border-radius:2px;background:#EDEAE4;cursor:pointer;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;transition:transform .12s,box-shadow .12s;position:relative}
 .tile .ab{font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:600;opacity:.62}
 .tile .vv{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:1px}
+.tile .pct{font-family:"IBM Plex Mono",monospace;font-size:7.5px;font-weight:500;opacity:.55;margin-top:0;font-variant-numeric:tabular-nums}
 .tile.nodata{background:repeating-linear-gradient(45deg,#EDEAE4,#EDEAE4 3px,#E4E0D8 3px,#E4E0D8 6px);color:var(--muted)}
 .tile:hover{transform:translateY(-2px);box-shadow:0 4px 10px -2px rgba(23,38,46,.3);z-index:3}
 .tile:focus-visible{outline:2px solid var(--ink);outline-offset:2px;z-index:3}
@@ -243,6 +244,7 @@ footer a{color:var(--ink-soft)}
 }
 @media (max-width:560px){
   .tile .vv{display:none}
+  .tile .pct{display:none}
   .tile .ab{font-size:8.5px;opacity:.75}
   .grid{gap:3px}
 }
@@ -435,6 +437,8 @@ table.yoy{width:100%;border-collapse:collapse;font-size:12.5px;}.miles-wrap tabl
 .map-panel{margin-top:20px;}.miles-wrap #map{
   width:100%;height:560px;border-radius:12px;border:1px solid var(--border);
   background:#EFEAE0;
+}.miles-wrap #map .leaflet-tile-pane{
+  filter:grayscale(.55) brightness(1.08) contrast(.92);
 }.miles-wrap .map-reset-btn{
   position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:15;
   background:var(--ink);color:#F3E3C4;border:none;
@@ -457,7 +461,7 @@ table.yoy{width:100%;border-collapse:collapse;font-size:12.5px;}.miles-wrap tabl
   min-width:120px;height:34px;padding:0 12px;box-sizing:border-box;
   color:var(--ink-faint);font-size:11.5px;font-style:italic;font-family:'Source Serif 4',serif;
   cursor:default;
-}.miles-wrap .map-count{font-size:12px;color:var(--ink-faint);margin-top:8px;}.miles-wrap .leaflet-popup-content-wrapper{background:var(--bg-panel);color:var(--ink);border-radius:8px;}.miles-wrap .leaflet-popup-content{font-family:'Work Sans',sans-serif;font-size:12.5px;line-height:1.5;margin:10px 12px;}.miles-wrap .leaflet-popup-content b{font-family:'Source Serif 4',serif;color:var(--rust);}.miles-wrap .leaflet-popup-tip{background:var(--bg-panel);}.miles-wrap /* footer */
+}.miles-wrap .map-count{font-size:12px;color:var(--ink-faint);margin-top:8px;}.miles-wrap .leaflet-popup-content-wrapper{background:var(--bg-panel);color:var(--ink);border-radius:8px;}.miles-wrap .leaflet-popup-content{font-family:'Work Sans',sans-serif;font-size:12.5px;line-height:1.5;margin:10px 12px;}.miles-wrap .leaflet-popup-content b{font-family:'Source Serif 4',serif;color:var(--rust);}.miles-wrap .leaflet-popup-tip{background:var(--bg-panel);}.miles-wrap .route-tip{background:var(--ink);color:#F3E3C4;border:none;border-radius:6px;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;box-shadow:0 4px 12px -3px rgba(0,0,0,.35);}.miles-wrap .route-tip b{font-family:'Source Serif 4',serif;font-weight:600;}.miles-wrap .route-tip::before{border-top-color:var(--ink);}.miles-wrap /* footer */
 .footer{
   margin-top:48px;padding-top:20px;border-top:1px solid var(--border);
   font-size:11.5px;color:var(--ink-faint);display:flex;justify-content:space-between;
@@ -502,9 +506,9 @@ table.yoy{width:100%;border-collapse:collapse;font-size:12.5px;}.miles-wrap tabl
 <section id="mapsec">
   <div class="sec-head">
     <h2>Every state, one square</h2>
-    <p>A tile for each state, arranged roughly by geography. Equal squares mean Rhode Island is as readable as Texas — the crowding in the Northeast disappears.</p>
+    <p>A tile for each state, arranged roughly by geography. On a real map, tiny Northeastern states (Rhode Island, Connecticut, New Jersey, Delaware…) are so small and tightly packed they're hard to see or click. Giving every state an equal-size square fixes that — Rhode Island gets as much room as Texas.</p>
     <p class="note">Three readings of the same map — switch with the buttons. Hover a tile for its numbers,
-       click to pin a state and see its year-by-year history.</p>
+       click to pin a state and see its year-by-year history, click it again to clear the pin.</p>
     <div class="seg" id="modes" role="group" aria-label="Map measure">
       <button data-m="from" aria-pressed="true">Rescued from</button>
       <button data-m="to" aria-pressed="false">Adopted to</button>
@@ -528,7 +532,7 @@ table.yoy{width:100%;border-collapse:collapse;font-size:12.5px;}.miles-wrap tabl
   <div class="charts">
     <div class="card">
       <h3>Rescued and adopted, by year</h3>
-      <p class="cap">The programme roughly doubled in 2018. Intake held steady through the first pandemic year, then hit its all-time peak in 2021 — 252 dogs in, 239 out — and has eased back since.</p>
+      <p class="cap">Echo Dogs rescue roughly doubled in 2018. Intake held steady through the first pandemic year, then hit its all-time peak in 2021 — 252 dogs in, 239 out — and has eased back since.</p>
       <div class="key"><span><i style="background:var(--out)"></i>Rescued</span><span><i style="background:var(--in)"></i>Adopted</span></div>
       <div id="c1"></div>
     </div>
@@ -591,7 +595,7 @@ table.yoy{width:100%;border-collapse:collapse;font-size:12.5px;}.miles-wrap tabl
     <div class="ctl">
       <label for="sort">Order by</label>
       <select id="sort">
-        <option value="az">State name, A\u2013Z</option>
+        <option value="az">State name, A&ndash;Z</option>
         <option value="from">Dogs rescued from</option>
         <option value="to">Dogs adopted to</option>
         <option value="net">Biggest imbalance</option>
@@ -789,6 +793,9 @@ const BUILT_STATES = "2026-08-14";
 
   const fmt = n => n.toLocaleString("en-US");
   const pct = (n, d) => d ? (n / d * 100).toFixed(1) + "%" : "0.0%";
+  /* Safe way to stash an HTML snippet inside a data-* attribute (used for
+     bar-chart tooltips) so it round-trips through the DOM intact. */
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
   function el(tag, cls, html) {
     const n = document.createElement(tag);
@@ -830,7 +837,7 @@ const BUILT_STATES = "2026-08-14";
 
   const APP = {
     YEARS, Y0, Y1, OFFMAP, PARTIAL, BY, DATA,
-    fmt, pct, el, mix, shade, readHash, writeHash,
+    fmt, pct, esc, el, mix, shade, readHash, writeHash,
     range: { a: Y0, b: Y1 },
     onChange: () => {}
   };
@@ -1041,7 +1048,7 @@ const BUILT_STATES = "2026-08-14";
     const b = el("button", "tile");
     b.type = "button"; b.dataset.name = full;
     b.style.setProperty("--c", c); b.style.setProperty("--r", r);
-    b.innerHTML = `<span class="ab">${ab}</span><span class="vv"></span>`;
+    b.innerHTML = `<span class="ab">${ab}</span><span class="vv"></span><span class="pct"></span>`;
     b.onclick = () => { view.sel = view.sel === full ? null : full; render(); };
     const hover = () => {
       const t = b.getBoundingClientRect();
@@ -1058,6 +1065,20 @@ const BUILT_STATES = "2026-08-14";
   };
 
   /* ── small chart helpers ─────────────────────────────────────────── */
+  /* Bars carry their tooltip text in data-tip (built from real numbers,
+     not the native SVG <title> — this pops up styled and instantly via
+     the shared APP.tip element, same one the map tiles use). */
+  function attachBarTips(host) {
+    host.querySelectorAll("rect[data-tip]").forEach(rect => {
+      const show = () => {
+        const r = rect.getBoundingClientRect();
+        APP.tip.show(r.left + r.width / 2, r.top, rect.dataset.tip);
+      };
+      rect.onpointerenter = show; rect.onpointermove = show;
+      rect.onpointerleave = APP.tip.hide;
+    });
+  }
+
   function grouped(host, years, series, bands) {
     const H = 190, W = 560, L = 30, R = 6, T = 8, B = 20, iw = W - L - R, ih = H - T - B;
     const mx = Math.max(1, ...series.reduce((a, s) => a.concat(s.vals.filter(v => v != null)), []));
@@ -1086,12 +1107,14 @@ const BUILT_STATES = "2026-08-14";
       series.forEach((se, j) => {
         const v = se.vals[i]; if (v == null) return;
         const bh = v / mx * ih, x = cx - (bw * series.length) / 2 + j * bw;
-        s += `<rect x="${x}" y="${T + ih - bh}" width="${bw - 1.5}" height="${Math.max(bh, v ? 1 : 0)}" fill="${se.color}" rx="1"><title>${y} · ${se.name}: ${v}</title></rect>`;
+        const tip = `<b>${y}</b><div class="r"><span>${se.name}</span><span>${fmt(v)}</span></div>`;
+        s += `<rect x="${x}" y="${T + ih - bh}" width="${bw - 1.5}" height="${Math.max(bh, v ? 1 : 0)}" fill="${se.color}" rx="1" data-tip="${APP.esc(tip)}"/>`;
       });
       if (years.length <= 20 || i % 2 === 0)
         s += `<text class="al" x="${cx}" y="${H - 6}" text-anchor="middle">${String(y).slice(2)}</text>`;
     });
     host.innerHTML = s + "</svg>";
+    attachBarTips(host);
   }
 
   function stacked(host, years, a, b) {
@@ -1106,12 +1129,15 @@ const BUILT_STATES = "2026-08-14";
     years.forEach((y, i) => {
       const cx = L + step * i + step / 2, x = cx - bw / 2;
       const ah = (a.vals[i] || 0) / mx * ih, bh = (b.vals[i] || 0) / mx * ih;
-      s += `<rect x="${x}" y="${T + ih - ah - bh}" width="${bw}" height="${bh}" fill="${b.color}" rx="1"><title>${y} · ${b.name}: ${b.vals[i] || 0}</title></rect>`;
-      s += `<rect x="${x}" y="${T + ih - ah}" width="${bw}" height="${ah}" fill="${a.color}" rx="1"><title>${y} · ${a.name}: ${a.vals[i] || 0}</title></rect>`;
+      const tipB = `<b>${y}</b><div class="r"><span>${b.name}</span><span>${fmt(b.vals[i] || 0)}</span></div>`;
+      const tipA = `<b>${y}</b><div class="r"><span>${a.name}</span><span>${fmt(a.vals[i] || 0)}</span></div>`;
+      s += `<rect x="${x}" y="${T + ih - ah - bh}" width="${bw}" height="${bh}" fill="${b.color}" rx="1" data-tip="${APP.esc(tipB)}"/>`;
+      s += `<rect x="${x}" y="${T + ih - ah}" width="${bw}" height="${ah}" fill="${a.color}" rx="1" data-tip="${APP.esc(tipA)}"/>`;
       if (years.length <= 20 || i % 2 === 0)
         s += `<text class="al" x="${cx}" y="${H - 6}" text-anchor="middle">${String(y).slice(2)}</text>`;
     });
     host.innerHTML = s + "</svg>";
+    attachBarTips(host);
   }
 
   function tornado(host, rows) {
@@ -1128,14 +1154,17 @@ const BUILT_STATES = "2026-08-14";
       const w = Math.abs(r.net) / mx * half, out = r.net < 0;
       const col = out ? "#A81D3F" : "#10646F";
       s += `<text class="al nm" x="${nameR}" y="${base}" text-anchor="end" fill="#17262E">${r.name}</text>`;
-      s += `<rect x="${out ? mid - w : mid}" y="${y}" width="${w}" height="${bh}" fill="${col}" rx="1">
-              <title>${r.name}: ${r.to} adopted in \u2212 ${r.from} rescued out = net ${r.net > 0 ? "+" : ""}${r.net}</title></rect>`;
+      const tip = `<b>${r.name}</b><div class="r"><span>Adopted in</span><span>${fmt(r.to)}</span></div>`
+        + `<div class="r"><span>Rescued out</span><span>${fmt(r.from)}</span></div>`
+        + `<div class="r"><span>Net</span><span>${r.net > 0 ? "+" : ""}${fmt(r.net)}</span></div>`;
+      s += `<rect x="${out ? mid - w : mid}" y="${y}" width="${w}" height="${bh}" fill="${col}" rx="1" data-tip="${APP.esc(tip)}"/>`;
       s += `<text class="al nt" x="${barR + 14}" y="${base}" fill="${col}">${r.net > 0 ? "+" : "\u2212"}${Math.abs(r.net)}</text>`;
       s += `<text class="al" x="${barR + 54}" y="${base}">${fmt(r.to)} in \u2212 ${fmt(r.from)} out</text>`;
     });
     s += `<text class="al" x="${mid - 6}" y="${H - 4}" text-anchor="end">sends more out than it takes in</text>`;
     s += `<text class="al" x="${mid + 6}" y="${H - 4}">takes more in than it sends out</text>`;
     host.innerHTML = s + "</svg>";
+    attachBarTips(host);
   }
 
   function sparkline(name, key, color) {
@@ -1160,8 +1189,9 @@ const BUILT_STATES = "2026-08-14";
         <span class="rtrack"><i style="width:${r[key] / mx * 100}%"></i></span>
         <span class="rval">${fmt(r[key])} <em>${APP.pct(r[key], total)}</em></span>`;
       if (r.onmap) row.onclick = () => {
-        view.sel = r.name; render();
-        document.getElementById("mapsec").scrollIntoView({ behavior: "smooth", block: "start" });
+        const already = view.sel === r.name;
+        view.sel = already ? null : r.name; render();
+        if (!already) document.getElementById("mapsec").scrollIntoView({ behavior: "smooth", block: "start" });
       };
       else row.style.cursor = "default";
       host.appendChild(row);
@@ -1261,6 +1291,9 @@ const BUILT_STATES = "2026-08-14";
       t.style.color = sh ? sh.fg : "";
       t.querySelector(".vv").textContent = blank ? ""
         : view.mode === "net" ? (v > 0 ? "+" + v : v === 0 ? "0" : "\u2212" + Math.abs(v)) : (v || "0");
+      const pctTotal = view.mode === "to" ? tt.t : tt.f;
+      t.querySelector(".pct").textContent = (blank || view.mode === "net" || !pctTotal) ? ""
+        : Math.round(v / pctTotal * 100) + "%";
       t.setAttribute("aria-label", `${t.dataset.name}: ${r ? `${r.from} rescued from, ${r.to} adopted to` : "no dogs recorded"}`);
     });
 
@@ -1933,9 +1966,9 @@ function renderYoYTable(){
 // ---------------- map ----------------
 function initMap(){
   map = L.map('map', {scrollWheelZoom:true, preferCanvas:true}).setView([37.8,-91.5], 4);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution:'© OpenStreetMap contributors © CARTO',
-    subdomains:'abcd', maxZoom:19
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OpenStreetMap contributors',
+    subdomains:'abc', maxZoom:19
   }).addTo(map);
   layerGroup = L.layerGroup().addTo(map);
 
@@ -2004,6 +2037,10 @@ function renderMap(trips){
       color, weight:1.6, opacity: isEst?0.55:0.8,
       dashArray: isEst ? '4,4' : null
     });
+    line.bindTooltip(
+      `<b>${t.dog}</b>${t.mileage ? ' — ' + Math.round(t.mileage).toLocaleString() + ' mi' : ''}`,
+      { sticky:true, direction:'top', offset:[0,-4], opacity:1, className:'route-tip' }
+    );
     line.bindPopup(
       `<b>${t.dog}</b><br/>${t.startDate}${t.endDate?(' → '+t.endDate):''}<br/>` +
       `${t.startCityState||''} → ${t.endCityState||''}<br/>` +
@@ -2011,6 +2048,8 @@ function renderMap(trips){
       `${t.coordinator ? 'Coordinator: '+t.coordinator : ''}` +
       `${isEst ? '<br/><i style="color:#9c4a2e;">approximate route (estimated coordinates)</i>':''}`
     );
+    line.on('mouseover', () => line.setStyle({ weight: 4 }));
+    line.on('mouseout', () => line.setStyle({ weight: 1.6 }));
     line.addTo(layerGroup);
     bounds.push([t.startLat,t.startLon]); bounds.push([t.endLat,t.endLon]);
     drawn++;
